@@ -1,0 +1,956 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Translation Management Service API",
+        "description": "API documentation for Translation Management Service",
+        "contact": {
+            "name": "API Support",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "MIT",
+            "url": "https://opensource.org/licenses/MIT"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "API Server"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Authenticate user and get token",
+                "description": "Login and get a token.",
+                "operationId": "d618a255475240ba3d40cc39692cd924",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|12345abcde..."
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "User"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "The provided credentials are incorrect."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout user and invalidate token",
+                "description": "Logout and revoke token.",
+                "operationId": "1e357eb2c93a1bdabebcebfa088332bf",
+                "responses": {
+                    "200": {
+                        "description": "Logout successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user": {
+            "get": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Get authenticated user information",
+                "description": "Get authenticated user details.",
+                "operationId": "8f60355fe45caf090eec729e26434da4",
+                "responses": {
+                    "200": {
+                        "description": "User information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "User"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "user@example.com"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/export/language/{languageCode}": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Export translations for a specific language",
+                "description": "Returns translations as a key-value object for the specified language",
+                "operationId": "09d59522def0b6a4906e86250e4d7c30",
+                "parameters": [
+                    {
+                        "name": "languageCode",
+                        "in": "path",
+                        "description": "Language code (e.g., en, fr, es)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations exported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "welcome_message": "Welcome to our application",
+                                    "login_button": "Login",
+                                    "signup_button": "Sign Up"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Language not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/export/all": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Export translations for all languages",
+                "description": "Returns translations as a nested object with language codes as keys",
+                "operationId": "996d56e121a68a8d89c4a1e06abbd4e5",
+                "responses": {
+                    "200": {
+                        "description": "Translations exported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "en": {
+                                        "welcome_message": "Welcome to our application",
+                                        "login_button": "Login"
+                                    },
+                                    "fr": {
+                                        "welcome_message": "Bienvenue dans notre application",
+                                        "login_button": "Connexion"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/export/tags": {
+            "get": {
+                "tags": [
+                    "Export"
+                ],
+                "summary": "Export translations filtered by tags",
+                "description": "Returns translations filtered by specified tags",
+                "operationId": "6d901713033e3a562260502ec56f7741",
+                "parameters": [
+                    {
+                        "name": "tags",
+                        "in": "query",
+                        "description": "Comma-separated list of tag names",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Language code to filter by (optional)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations exported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "en": {
+                                        "mobile_welcome": "Welcome to our mobile app",
+                                        "mobile_login": "Login"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/translations": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Get a list of translations",
+                "description": "Display a listing of the resource.",
+                "operationId": "3c2930eff48d245d2c2747e017f044e6",
+                "parameters": [
+                    {
+                        "name": "language_id",
+                        "in": "query",
+                        "description": "Filter by language ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Filter by tag name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "key",
+                        "in": "query",
+                        "description": "Filter by key (partial match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Filter by content (partial match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of translations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "language_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "key": {
+                                                        "type": "string",
+                                                        "example": "welcome_message"
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Welcome to our application"
+                                                    },
+                                                    "language": {
+                                                        "type": "object"
+                                                    },
+                                                    "tags": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Create a new translation",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "6042ec1977ca7c72336f2258639d0ca4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "language_id",
+                                    "key",
+                                    "content"
+                                ],
+                                "properties": {
+                                    "language_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "key": {
+                                        "type": "string",
+                                        "example": "welcome_message"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Welcome to our application"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Translation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "language_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "key": {
+                                                    "type": "string",
+                                                    "example": "welcome_message"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Welcome to our application"
+                                                },
+                                                "language": {
+                                                    "type": "object"
+                                                },
+                                                "tags": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/translations/{id}": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Get a specific translation",
+                "description": "Display the specified resource.",
+                "operationId": "7ba5516debb5f8be391ab24c2e35246c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Translation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translation details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "language_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "key": {
+                                                    "type": "string",
+                                                    "example": "welcome_message"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Welcome to our application"
+                                                },
+                                                "language": {
+                                                    "type": "object"
+                                                },
+                                                "tags": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Translation not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Update a translation",
+                "description": "Update the specified resource in storage.",
+                "operationId": "290e8b744f1aed62ce18a8a711e694a9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Translation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "language_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "key": {
+                                        "type": "string",
+                                        "example": "welcome_message"
+                                    },
+                                    "content": {
+                                        "type": "string",
+                                        "example": "Welcome to our application"
+                                    },
+                                    "tags": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            1,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Translation updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "language_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "key": {
+                                                    "type": "string",
+                                                    "example": "welcome_message"
+                                                },
+                                                "content": {
+                                                    "type": "string",
+                                                    "example": "Welcome to our application"
+                                                },
+                                                "language": {
+                                                    "type": "object"
+                                                },
+                                                "tags": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Translation not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Delete a translation",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "6be073d8de9bc7a1d9a6859664dd7c16",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Translation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translation deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translation deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Translation not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/translations/search": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Search translations",
+                "description": "Search translations.",
+                "operationId": "dd1e2a91ed2812020a3f7c6ca77eac8c",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "query",
+                        "description": "Search by key (partial match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "content",
+                        "in": "query",
+                        "description": "Search by content (partial match)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "language_id",
+                        "in": "query",
+                        "description": "Filter by language ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tags",
+                        "in": "query",
+                        "description": "Filter by tag IDs (comma-separated)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "language_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "key": {
+                                                        "type": "string",
+                                                        "example": "welcome_message"
+                                                    },
+                                                    "content": {
+                                                        "type": "string",
+                                                        "example": "Welcome to our application"
+                                                    },
+                                                    "language": {
+                                                        "type": "object"
+                                                    },
+                                                    "tags": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "object"
+                                                        }
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "links": {
+                                            "type": "object"
+                                        },
+                                        "meta": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Error": {
+                "properties": {
+                    "message": {
+                        "type": "string",
+                        "example": "Error message"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter token in format (Bearer <token>)"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Export",
+            "description": "Export"
+        },
+        {
+            "name": "Translations",
+            "description": "Translations"
+        }
+    ],
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ]
+}

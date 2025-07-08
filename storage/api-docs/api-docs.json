@@ -40,7 +40,7 @@
                                     "email": {
                                         "type": "string",
                                         "format": "email",
-                                        "example": "user@example.com"
+                                        "example": "test@example.com"
                                     },
                                     "password": {
                                         "type": "string",
@@ -76,7 +76,7 @@
                                                 },
                                                 "email": {
                                                     "type": "string",
-                                                    "example": "user@example.com"
+                                                    "example": "test@example.com"
                                                 }
                                             },
                                             "type": "object"
@@ -169,7 +169,7 @@
                                                 },
                                                 "email": {
                                                     "type": "string",
-                                                    "example": "user@example.com"
+                                                    "example": "test@example.com"
                                                 },
                                                 "created_at": {
                                                     "type": "string",

@@ -11,28 +11,26 @@ A scalable and high-performance API-driven service for managing translations acr
 -   JSON export endpoint for frontend applications
 -   Optimized for high performance (response times < 200ms)
 -   Support for 100k+ records with efficient pagination and caching
--   OpenAPI (Swagger) documentation for all endpoints
+-   Swagger documentation for all endpoints
 
 ## Tech Stack
 
 -   Laravel 12
--   MySQL/PostgreSQL
--   Redis (for caching)
--   OpenAPI/Swagger for API documentation
+-   MySQL
+-   Swagger for API documentation
 
 ## Requirements
 
--   PHP 8.1+
+-   PHP 8.2+
 -   Composer
--   MySQL 8.0+ or PostgreSQL 12+
--   Redis (optional but recommended for performance)
+-   MySQL 8.0+
 
 ## Installation
 
 1. Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/gulzarali-packages/translation-service.git
 cd translation-service
 ```
 
@@ -113,7 +111,7 @@ Request:
 
 ```json
 {
-    "email": "user@example.com",
+    "email": "test@example.com",
     "password": "password"
 }
 ```
@@ -126,7 +124,7 @@ Response:
     "user": {
         "id": 1,
         "name": "User",
-        "email": "user@example.com"
+        "email": "test@example.com"
     }
 }
 ```
@@ -221,14 +219,12 @@ This service implements several performance optimization techniques:
 
 1. **Caching**: Responses are cached to reduce database load
 2. **Indexing**: Proper database indexes for faster queries
-3. **Query optimization**: Efficient SQL queries with eager loading
-4. **Pagination**: Results are paginated to handle large datasets
-5. **Resource transformation**: Lightweight API resources
+3. **Pagination**: Results are paginated to handle large datasets
+4. **Resource transformation**: Lightweight API resources
 
 ## Design Choices
 
 -   **Service Pattern**: The application uses a service layer pattern to separate business logic from controllers
--   **Repository Pattern**: Not implemented as it would add unnecessary abstraction for this scale
 -   **SOLID Principles**: Each class has a single responsibility and proper dependency injection
 -   **Performance Focus**: The system is designed with performance in mind, with special attention to the JSON export endpoint
 
@@ -245,7 +241,3 @@ Performance tests:
 ```bash
 php artisan test --filter=PerformanceTest
 ```
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

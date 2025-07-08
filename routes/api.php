@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\DocumentationController;
 use App\Http\Controllers\API\ExportController;
 use App\Http\Controllers\API\LanguageController;
 use App\Http\Controllers\API\TagController;
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+// Documentation route
+Route::get('/', [DocumentationController::class, 'info']);
 
 // Public routes
 Route::post('/login', [AuthController::class, 'login']);

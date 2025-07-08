@@ -9,6 +9,7 @@ use App\Models\Tag;
 use App\Services\TagService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use OpenApi\Annotations as OA;
 
 class TagController extends Controller
 {
@@ -27,6 +28,33 @@ class TagController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @OA\Get(
+     *     path="/tags",
+     *     summary="Get all tags",
+     *     tags={"Tags"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of tags",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     @OA\Property(property="id", type="integer", example=1),
+     *                     @OA\Property(property="name", type="string", example="Common"),
+     *                     @OA\Property(property="created_at", type="string", format="date-time"),
+     *                     @OA\Property(property="updated_at", type="string", format="date-time")
+     *                 )
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
+     *
      * @return AnonymousResourceCollection
      */
     public function index(): AnonymousResourceCollection
@@ -37,6 +65,42 @@ class TagController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @OA\Post(
+     *     path="/tags",
+     *     summary="Create a new tag",
+     *     tags={"Tags"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Frontend")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Tag created successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Frontend"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
      *
      * @param TagRequest $request
      * @return TagResource
@@ -50,6 +114,42 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      *
+     * @OA\Get(
+     *     path="/tags/{tag}",
+     *     summary="Get tag details",
+     *     tags={"Tags"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="tag",
+     *         in="path",
+     *         required=true,
+     *         description="Tag ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag details",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Frontend"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag not found"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
+     *
      * @param Tag $tag
      * @return TagResource
      */
@@ -60,6 +160,53 @@ class TagController extends Controller
 
     /**
      * Update the specified resource in storage.
+     *
+     * @OA\Put(
+     *     path="/tags/{tag}",
+     *     summary="Update tag",
+     *     tags={"Tags"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="tag",
+     *         in="path",
+     *         required=true,
+     *         description="Tag ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name"},
+     *             @OA\Property(property="name", type="string", example="Backend")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag updated successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="name", type="string", example="Backend"),
+     *                 @OA\Property(property="created_at", type="string", format="date-time"),
+     *                 @OA\Property(property="updated_at", type="string", format="date-time")
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag not found"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
      *
      * @param TagRequest $request
      * @param Tag $tag
@@ -73,6 +220,35 @@ class TagController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     *
+     * @OA\Delete(
+     *     path="/tags/{tag}",
+     *     summary="Delete tag",
+     *     tags={"Tags"},
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="tag",
+     *         in="path",
+     *         required=true,
+     *         description="Tag ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Tag deleted successfully",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Tag deleted successfully")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Tag not found"
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthenticated"
+     *     )
+     * )
      *
      * @param Tag $tag
      * @return JsonResponse

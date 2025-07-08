@@ -11,13 +11,14 @@ A scalable and high-performance API-driven service for managing translations acr
 -   JSON export endpoint for frontend applications
 -   Optimized for high performance (response times < 200ms)
 -   Support for 100k+ records with efficient pagination and caching
--   OpenAPI/Swagger documentation for API endpoints
+-   OpenAPI (Swagger) documentation for all endpoints
 
 ## Tech Stack
 
 -   Laravel 12
 -   MySQL/PostgreSQL
 -   Redis (for caching)
+-   OpenAPI/Swagger for API documentation
 
 ## Requirements
 
@@ -71,27 +72,32 @@ php artisan migrate
 php artisan translation:seed --count=100000
 ```
 
-7. Generate Swagger documentation:
-
-```bash
-php artisan l5-swagger:generate
-```
-
-8. Start the server:
+7. Start the server:
 
 ```bash
 php artisan serve
 ```
 
-9. Access the API documentation at:
+## API Documentation
+
+The API provides endpoints for managing translations, languages, and tags.
+
+### OpenAPI Documentation
+
+Interactive API documentation is available at:
 
 ```
 http://localhost:8000/api/documentation
 ```
 
-## API Documentation
+This documentation is generated from annotations in the controller files and provides:
 
-The API documentation is available through Swagger UI at `/api/documentation`. It provides detailed information about all endpoints, request parameters, and response formats.
+-   Detailed endpoint descriptions
+-   Request/response examples
+-   Interactive testing capabilities
+-   Authentication support
+
+For more details on the API documentation, see [API_DOCUMENTATION.md](API_DOCUMENTATION.md).
 
 ### Authentication
 

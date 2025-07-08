@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\API;
 
-use Illuminate\Http\Request;
-use L5Swagger\Http\Controllers\SwaggerController as L5SwaggerController;
+use App\Http\Controllers\Controller;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(
- *     title="Translation Management Service API",
+ *     title="Translation Service API",
  *     version="1.0.0",
- *     description="API documentation for Translation Management Service",
+ *     description="API Documentation for Translation Service",
  *     @OA\Contact(
  *         email="support@example.com",
- *         name="API Support"
+ *         name="Support Team"
  *     ),
  *     @OA\License(
- *         name="MIT",
- *         url="https://opensource.org/licenses/MIT"
+ *         name="MIT"
  *     )
  * )
  * 
@@ -26,19 +25,34 @@ use L5Swagger\Http\Controllers\SwaggerController as L5SwaggerController;
  * )
  * 
  * @OA\SecurityScheme(
- *     securityScheme="bearerAuth",
  *     type="http",
  *     scheme="bearer",
- *     bearerFormat="JWT"
+ *     bearerFormat="JWT",
+ *     securityScheme="bearerAuth"
  * )
  * 
- * @OA\Schema(
- *     schema="Error",
- *     @OA\Property(property="message", type="string", example="Error message")
+ * @OA\Tag(
+ *     name="Authentication",
+ *     description="API Endpoints for user authentication"
+ * )
+ * @OA\Tag(
+ *     name="Languages",
+ *     description="API Endpoints for language management"
+ * )
+ * @OA\Tag(
+ *     name="Tags",
+ *     description="API Endpoints for tag management"
+ * )
+ * @OA\Tag(
+ *     name="Translations",
+ *     description="API Endpoints for translation management"
+ * )
+ * @OA\Tag(
+ *     name="Export",
+ *     description="API Endpoints for exporting translations"
  * )
  */
-class SwaggerController extends L5SwaggerController
+class SwaggerController extends Controller
 {
-    // This controller extends L5Swagger's controller
-    // The annotations above are used for Swagger documentation generation
+    // This controller exists solely to host the OpenAPI annotations
 } 
